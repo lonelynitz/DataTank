@@ -1,72 +1,54 @@
-import { useState } from "react";
-import { api } from "../routes/api";
-import { PhotoStore } from "./store";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { VideoStore } from "./videoStore";
-import { AudioStore } from "./AudioStore";
+import { InputAdornment, TextField } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+import AddPhotoAlternateOutlinedIcon from "@mui/icons-material/AddPhotoAlternateOutlined";
+import DuoIcon from "@mui/icons-material/Duo";
+import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
+import LibraryMusicIcon from "@mui/icons-material/LibraryMusic";
+import { Link } from "react-router-dom";
 
 export const Home = () => {
-  const initial = {
-    files: null,
-    image: [],
-    fileIds: [],
-    checked: false,
-    isPhotoUpload: false,
-    isCheckDisable : false
-  };
-  const [state, setState] = useState(initial);
-
-  const fileApi = api();
-
-  const handleFile = (event: any) => {
-    setState({ ...state, files: event.target.files[0] });
-  };
-
-  const handleSaveFile = async () => {
-    try {
-      if (state.files) {
-        const convertImg = new FormData();
-        convertImg.append("image", state.files);
-        await fileApi.post("/SaveFile", convertImg);
-      } else {
-        console.log("File not selected");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleFileUpload = async () => {
-    const filesLists = await fileApi.post("/view_files");
-    setState({ ...state, image: filesLists.data, isPhotoUpload: true });
-  };
-
   return (
-    <div>
-      <div className="flex justify-center bg-blue-400 p-10 relative">
-        <div onClick={() => setState({ ...state, isPhotoUpload: false })}>
-          <ArrowBackIcon
-            fontSize="large"
-            className="absolute left-3 cursor-pointer"
-          />
+    <div className="grid justify-items-center mt-10">
+      <h2 className="text-2xl font-medium">File Manager</h2>
+      <TextField
+        variant="standard"
+        placeholder="Search"
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <SearchIcon />
+            </InputAdornment>
+          ),
+        }}
+        style={{ marginTop: 20, width: 300 }}
+      />
+      <div className="grid gap-8 grid-cols-2 grid-rows-2 mt-10">
+        <div className="grid justify-items-center">
+          <Link to={"/photos"}>
+            <AddPhotoAlternateOutlinedIcon
+              fontSize="large"
+              className="cursor-pointer"
+            />
+          </Link>
+          <p>Photos</p>
         </div>
-        <p className="font-bold text-2xl md:text-4xl">My Files</p>
-      </div>
-      <div className="flex justify-center mt-10">
-        <div onClick={handleFileUpload} className="mr-10">
-          <PhotoStore
-            state={state}
-            setState={setState}
-            handleSaveFile={handleSaveFile}
-            handleFile={handleFile}
-            handleFileUpload={handleFileUpload}
-          />
+        <div className="grid justify-items-center">
+          <Link to={"/videos"}>
+          <DuoIcon fontSize="large" className="cursor-pointer" />
+          </Link>
+          <p>Videos</p>
         </div>
-        <div className="mr-10">
-          {!state.isPhotoUpload && <VideoStore />}
+        <div className="grid justify-items-center">
+          <Link to={"/documents"}>
+          <ReceiptLongIcon fontSize="large" className="cursor-pointer" />
+          </Link>
+          <p>Documents</p>
         </div>
-        <div>
-          {!state.isPhotoUpload && <AudioStore />}
+        <div className="grid justify-items-center">
+          <Link to={"/musics"}>
+          <LibraryMusicIcon fontSize="large" className="cursor-pointer" />
+          </Link>
+          <p>Musics</p>
         </div>
       </div>
     </div>
