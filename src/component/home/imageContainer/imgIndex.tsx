@@ -1,19 +1,38 @@
 import { TextField, InputAdornment } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { Button, Upload } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
+import { FileUpload } from "../../common/fileUpload";
 import { api } from "../../routes/api";
+import { useEffect, useState } from "react";
 
 export const ImgIndex = () => {
+  const initial = {
+    fileList: [],
+    img: [],
+    thumbnail: [],
+  };
 
-  const apiServer = api()
+  const [state, setState] = useState(initial);
 
-  const handleUploadImage = (event:any) => {
-    //const response = apiServer.post('/fileUpload')
-    console.log(event.file.uid);
-    
-  }
+  const fileList = api();
 
+  useEffect(() => {
+    const List = async () => {
+      try {
+        const list = await fileList.get("/viewFile");
+        if (list.data) {
+          const imgList = list.data.rows;
+          const imgBufferData = imgList.map((data: any) => {
+            const img = data.img.data;
+            return img.toString("base64");
+          });
+          setState({ ...state, fileList: imgList, img: imgBufferData });
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    List();
+  }, []);
 
   return (
     <div className="">
@@ -31,11 +50,8 @@ export const ImgIndex = () => {
           }}
           style={{ marginTop: 20, width: 300 }}
         />
-        <div className="flex justify-center mt-10">
-          <Upload onChange={handleUploadImage}>
-            <Button icon={<UploadOutlined />}>Upload</Button>
-          </Upload>
-          <Button className="ml-2">Save</Button>
+        <div className="mt-10">
+          <FileUpload />
         </div>
       </div>
     </div>

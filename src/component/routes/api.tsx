@@ -11,3 +11,5 @@ export const api = (token?:any) => {
     })
   )
 }
+
+export const FILEUPLOADENDPOINT = "http://localhost:3000/fileUpload"

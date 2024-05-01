@@ -1,10 +1,7 @@
 import { InputAdornment, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import AddPhotoAlternateOutlinedIcon from "@mui/icons-material/AddPhotoAlternateOutlined";
-import DuoIcon from "@mui/icons-material/Duo";
-import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
-import LibraryMusicIcon from "@mui/icons-material/LibraryMusic";
 import { Link } from "react-router-dom";
+import { routes } from "../routes/links";
 
 export const Home = () => {
   return (
@@ -22,33 +19,13 @@ export const Home = () => {
         }}
         style={{ marginTop: 20, width: 300 }}
       />
-      <div className="grid gap-8 grid-cols-2 grid-rows-2 mt-10">
-        <div className="grid justify-items-center">
-          <Link to={"/photos"}>
-            <AddPhotoAlternateOutlinedIcon
-              fontSize="large"
-              className="cursor-pointer"
-            />
-          </Link>
-          <p>Photos</p>
-        </div>
-        <div className="grid justify-items-center">
-          <Link to={"/videos"}>
-          <DuoIcon fontSize="large" className="cursor-pointer" />
-          </Link>
-          <p>Videos</p>
-        </div>
-        <div className="grid justify-items-center">
-          <Link to={"/documents"}>
-          <ReceiptLongIcon fontSize="large" className="cursor-pointer" />
-          </Link>
-          <p>Documents</p>
-        </div>
-        <div className="grid justify-items-center">
-          <Link to={"/musics"}>
-          <LibraryMusicIcon fontSize="large" className="cursor-pointer" />
-          </Link>
-          <p>Musics</p>
+      <div>
+        <div className="grid gap-8 grid-cols-2  grid-rows-2 mt-10">
+          {routes.map((order: any) => (
+            <div className="flex justify-center text-center">
+              <Link to={order.link}>{order.icon}<p>{order.name}</p></Link>
+            </div>
+          ))}
         </div>
       </div>
     </div>
