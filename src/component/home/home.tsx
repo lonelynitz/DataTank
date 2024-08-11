@@ -12,7 +12,6 @@ export const Home = () => {
         placeholder="Search"
         InputProps={{
           startAdornment: (
-            <InputAdornment position="start">
               <SearchIcon />
             </InputAdornment>
           ),
